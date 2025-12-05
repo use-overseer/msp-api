@@ -16,7 +16,7 @@ To fetch the JSON data for the current Meeting Workbook (mwb) in English:
 
 **Request:**
 ```bash
-curl "https://msp-api-nu.vercel.app/api/parse?lang=E&pub=mwb"
+curl "https://msp-api.useoverseer.org/api/parse?lang=E&pub=mwb"
 ```
 
 **Response:**
@@ -74,13 +74,13 @@ You can filter the results to a specific week by providing a `date` parameter in
 **Example for Meeting Workbook (mwb):**
 **Request:**
 ```bash
-curl "https://msp-api-nu.vercel.app/api/parse?lang=E&pub=mwb&date=2024-11-04"
+curl "https://msp-api.useoverseer.org/api/parse?lang=E&pub=mwb&date=2024-11-04"
 ```
 
 **Example for Watchtower Study (w):**
 **Request:**
 ```bash
-curl "https://msp-api-nu.vercel.app/api/parse?lang=S&pub=w&issue=202508&date=2025-10-18"
+curl "https://msp-api.useoverseer.org/api/parse?lang=S&pub=w&issue=202508&date=2025-10-18"
 ```
 
 ### Get Current Watchtower Study (W) Data
@@ -89,7 +89,7 @@ To fetch the JSON data for the current Watchtower Study (w) in Spanish:
 
 **Request:**
 ```bash
-curl "https://msp-api-nu.vercel.app/api/parse?lang=S&pub=w"
+curl "https://msp-api.useoverseer.org/api/parse?lang=S&pub=w"
 ```
 
 **Response:**
@@ -114,12 +114,12 @@ Publications are often released in advance. For example, the August 2025 Watchto
 **Example for a specific Watchtower issue:**
 **Request:**
 ```bash
-curl "https://msp-api-nu.vercel.app/api/parse?lang=S&pub=w&issue=202508"
+curl "https://msp-api.useoverseer.org/api/parse?lang=S&pub=w&issue=202508"
 ```
 
 **Combined with date filtering:**
 ```bash
-curl "https://msp-api-nu.vercel.app/api/parse?lang=S&pub=w&issue=202508&date=2025-10-18"
+curl "https://msp-api.useoverseer.org/api/parse?lang=S&pub=w&issue=202508&date=2025-10-18"
 ```
 
 ### Language Codes
@@ -138,7 +138,7 @@ The API supports multiple languages using standard JW.org language codes:
 
 **Example with different language:**
 ```bash
-curl "https://msp-api-nu.vercel.app/api/parse?lang=F&pub=mwb"
+curl "https://msp-api.useoverseer.org/api/parse?lang=F&pub=mwb"
 ```
 
 ### Credits
