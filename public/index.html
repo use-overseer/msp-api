@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Meeting Schedules Parser Public API</title>
+
+        <!-- Google Fonts -->
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Carbon Components CSS -->
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/carbon-components/css/carbon-components.min.css"
+        />
+
+        <style>
+            body {
+                font-family: "IBM Plex Sans", sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+            }
+            .bx--grid {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            .intro {
+                margin-bottom: 2rem;
+            }
+            .results {
+                margin-top: 20px;
+                background: white;
+                padding: 20px;
+                border-radius: 4px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+            }
+            .loading {
+                text-align: center;
+                padding: 20px;
+            }
+            pre {
+                background: #f4f4f4;
+                padding: 10px;
+                border-radius: 4px;
+                overflow-x: auto;
+                font-size: 0.875rem;
+            }
+            .cache-info {
+                margin-bottom: 10px;
+                padding: 8px;
+                background: #e8f5e8;
+                border-radius: 4px;
+                color: #1a5724;
+            }
+            .language-list {
+                columns: 2;
+                list-style: none;
+                padding: 0;
+            }
+            .footer {
+                text-align: center;
+                margin-top: 2rem;
+                color: #888;
+                font-size: 0.875rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="bx--grid">
+            <div class="bx--row">
+                <div class="bx--col">
+                    <h1 class="bx--type-heading-01">
+                        Meeting Schedules Parser Public API
+                    </h1>
+                    <p class="bx--type-body-long-01 intro">
+                        (msp-api) is a lightweight HTTP service that parses
+                        JWPUB and EPUB files containing meeting schedules from
+                        JW.org. It includes an integrated caching system and an
+                        optional interactive frontend. The sole purpose of
+                        msp-api is to make the functionality of Meeting
+                        Schedules Parser accessible to other development
+                        environments.
+                    </p>
+
+                    <bx-tabs trigger-content="Select">
+                        <bx-tab id="overview" target="panel-overview"
+                            >Overview</bx-tab
+                        >
+                        <bx-tab id="examples" target="panel-examples"
+                            >Usage Examples</bx-tab
+                        >
+                        <bx-tab id="form" target="panel-form">API Form</bx-tab>
+                    </bx-tabs>
+
+                    <div class="tab-content">
+                        <bx-tab-content-panel id="panel-overview">
+                            <h2 class="bx--type-heading-02">Overview</h2>
+                            <p>
+                                Parse publications automatically or provide
+                                manual URLs. Supports Meeting Workbook (mwb) and
+                                Watchtower Study (w) publications.
+                            </p>
+
+                            <h3>Language Codes</h3>
+                            <ul class="language-list">
+                                <li>E: English</li>
+                                <li>S: Spanish</li>
+                                <li>X: Portuguese</li>
+                                <li>T: Chinese (Traditional)</li>
+                                <li>Z: Chinese (Simplified)</li>
+                                <li>F: French</li>
+                                <li>G: German</li>
+                                <li>I: Italian</li>
+                            </ul>
+                            <p>
+                                For the full list, check <code>/api/info</code>.
+                            </p>
+                        </bx-tab-content-panel>
+
+                        <bx-tab-content-panel id="panel-examples">
+                            <h2 class="bx--type-heading-02">Usage Examples</h2>
+
+                            <bx-card>
+                                <bx-card-heading
+                                    >Current Meeting Workbook (MWB) in
+                                    English</bx-card-heading
+                                >
+                                <bx-card-content>
+                                    <code>GET /api/parse?lang=E&pub=mwb</code>
+                                    <p>Returns JSON with weekly schedules.</p>
+                                </bx-card-content>
+                            </bx-card>
+
+                            <bx-card>
+                                <bx-card-heading
+                                    >Watchtower Study in
+                                    Spanish</bx-card-heading
+                                >
+                                <bx-card-content>
+                                    <code>GET /api/parse?lang=S&pub=w</code>
+                                    <p>
+                                        Fetches current Watchtower study data.
+                                    </p>
+                                </bx-card-content>
+                            </bx-card>
+
+                            <bx-card>
+                                <bx-card-heading
+                                    >Filter by Date</bx-card-heading
+                                >
+                                <bx-card-content>
+                                    <code
+                                        >GET
+                                        /api/parse?lang=E&pub=mwb&date=2024-11-04</code
+                                    >
+                                    <p>
+                                        Narrows to the week including the
+                                        specified date.
+                                    </p>
+                                </bx-card-content>
+                            </bx-card>
+
+                            <bx-card>
+                                <bx-card-heading
+                                    >Specific Issue</bx-card-heading
+                                >
+                                <bx-card-content>
+                                    <code
+                                        >GET
+                                        /api/parse?lang=S&pub=w&issue=202508</code
+                                    >
+                                    <p>Fetches a specific publication issue.</p>
+                                </bx-card-content>
+                            </bx-card>
+                        </bx-tab-content-panel>
+
+                        <bx-tab-content-panel id="panel-form" open>
+                            <h2 class="bx--type-heading-02">
+                                Parse Publication
+                            </h2>
+                            <form id="parseForm" class="bx--form">
+                                <div class="bx--form-item">
+                                    <bx-input
+                                        label-text="Language Code"
+                                        placeholder="E (English), S (Spanish), etc."
+                                        id="lang"
+                                        value="E"
+                                    ></bx-input>
+                                </div>
+
+                                <div class="bx--form-item">
+                                    <bx-select
+                                        label-text="Publication Type"
+                                        id="pub"
+                                    >
+                                        <bx-select-item value="mwb"
+                                            >Meeting Workbook
+                                            (mwb)</bx-select-item
+                                        >
+                                        <bx-select-item value="w"
+                                            >Watchtower Study
+                                            (w)</bx-select-item
+                                        >
+                                    </bx-select>
+                                </div>
+
+                                <div class="bx--form-item">
+                                    <bx-input
+                                        label-text="Issue (YYYYMM) - Optional"
+                                        placeholder="202411"
+                                        id="issue"
+                                    ></bx-input>
+                                </div>
+
+                                <div class="bx--form-item">
+                                    <bx-input
+                                        type="date"
+                                        label-text="Filter Date - Optional"
+                                        id="date"
+                                    ></bx-input>
+                                </div>
+
+                                <div class="bx--form-item">
+                                    <bx-input
+                                        label-text="Or Manual URL - Optional"
+                                        placeholder="https://example.com/file.jwpub"
+                                        id="url"
+                                    ></bx-input>
+                                </div>
+
+                                <bx-button type="submit"
+                                    >Parse Publication</bx-button
+                                >
+                            </form>
+
+                            <div
+                                id="loading"
+                                class="loading"
+                                style="display: none"
+                            >
+                                <bx-loading></bx-loading>
+                                <p>Parsing publication...</p>
+                            </div>
+
+                            <div
+                                id="results"
+                                class="results"
+                                style="display: none"
+                            >
+                                <div id="cacheInfo"></div>
+                                <div id="dataDisplay"></div>
+                            </div>
+                        </bx-tab-content-panel>
+                    </div>
+
+                    <div class="footer">
+                        Built upon the
+                        <a
+                            href="https://www.npmjs.com/package/meeting-schedules-parser"
+                            target="_blank"
+                            >Meeting Schedules Parser</a
+                        >
+                        library. All credit for the core parsing logic belongs
+                        to its original authors.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Carbon Components JS -->
+        <script src="https://unpkg.com/carbon-components/scripts/carbon-components.min.js"></script>
+        <script>
+            document
+                .getElementById("parseForm")
+                .addEventListener("submit", async (e) => {
+                    e.preventDefault();
+
+                    const lang = document.getElementById("lang").value;
+                    const pub = document.getElementById("pub").value;
+                    const issue = document.getElementById("issue").value;
+                    const date = document.getElementById("date").value;
+                    const url = document.getElementById("url").value;
+
+                    if (!url && (!lang || !pub)) {
+                        alert("Provide either a manual URL or lang and pub");
+                        return;
+                    }
+
+                    document.getElementById("loading").style.display = "block";
+                    document.getElementById("results").style.display = "none";
+
+                    try {
+                        const params = new URLSearchParams();
+                        if (lang) params.append("lang", lang);
+                        if (pub) params.append("pub", pub);
+                        if (issue) params.append("issue", issue);
+                        if (date) params.append("date", date);
+                        if (url) params.append("url", url);
+
+                        const response = await fetch("/api/parse?" + params);
+                        const result = await response.json();
+
+                        document.getElementById("loading").style.display =
+                            "none";
+
+                        if (response.ok) {
+                            displayResults(result);
+                        } else {
+                            alert("Error: " + (result.message || result.error));
+                        }
+                    } catch (error) {
+                        document.getElementById("loading").style.display =
+                            "none";
+                        alert("Error: " + error.message);
+                    }
+                });
+
+            function displayResults(result) {
+                const cacheInfo = document.getElementById("cacheInfo");
+                const dataDisplay = document.getElementById("dataDisplay");
+
+                cacheInfo.innerHTML = result.cached
+                    ? `<div class="cache-info">Loaded from cache (${result.cacheAge}s old)</div>`
+                    : '<div class="cache-info">Freshly parsed</div>';
+
+                dataDisplay.innerHTML =
+                    "<pre>" + JSON.stringify(result.data, null, 2) + "</pre>";
+
+                document.getElementById("results").style.display = "block";
+            }
+        </script>
+    </body>
+</html>

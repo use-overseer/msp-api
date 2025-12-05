@@ -1,0 +1,32 @@
+{
+  "name": "msp-api",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Meeting Schedules Parser Public API",
+  "main": "api/parse.ts",
+  "scripts": {
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "meeting-schedules-parser": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vercel/node": "^3.0.0",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "keywords": [
+    "epub",
+    "parse jwpub",
+    "parse",
+    "jw",
+    "jw.org",
+    "epub",
+    "jwpub"
+  ],
+  "author": "Livrädo Sandoval",
+  "license": "GPL-3.0"
+}
